@@ -11,4 +11,9 @@ The system is open and provides an example through which it is possible to adapt
 
 The management is carried out by an Arduino like system that allows you to detect temperatures and force the start-ups of the pumps remotely, via app, webserver or integration with alexa. In addition to temperature differences and heat losses the system also considers environmental conditions and weather previsions.
 In the initial phase, boiler management is not considered but its shutdown is only forced on the basis of weather information. The  boiler managment is left to the solar control unit. This first phase involves a study of temperatures and heat losses and a data logging.
+
 In a second phase this control will also be added.
+
+The management of the heating of several rooms with radiators and the management of the air conditioners by means of an RF control will also be added.
+
+The system also provides for the creation of chronothermostats and sensors for environmental well-being and comfort. Thermal safety devices and methane (or LPG) detectors will also be added. Finally, after a long testing period, the system will also replace the solar control unit.
