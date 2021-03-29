@@ -28,6 +28,7 @@ Finally, after a long testing period, the system will also replace the solar con
 * DS18B20 Thermal sensor 
 * DHT11 / DHT12 / DHT22 Sensor
 * PT1000
+* CT Sensor YHDC 30A 
 
 # Let's Work
 
