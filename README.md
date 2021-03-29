@@ -16,4 +16,22 @@ In a second phase this control will also be added.
 
 The management of the heating of several rooms with radiators and the management of the air conditioners by means of an RF control will also be added.
 
-The system also provides for the creation of chronothermostats and sensors for environmental well-being and comfort. Thermal safety devices and methane (or LPG) detectors will also be added. Finally, after a long testing period, the system will also replace the solar control unit.
+The system also provides for the creation of chronothermostats and sensors for environmental well-being and comfort. Thermal safety devices and methane (or LPG) detectors will also be added. 
+
+Finally, after a long testing period, the system will also replace the solar control unit.
+
+# Shopping bag
+* Arduino UNO
+* NodeMCU ESP32
+* Raspberry Pi
+* Relais
+* DS18B20 Thermal sensor 
+* DHT11 / DHT12 / DHT22 Sensor
+* PT1000
+
+# Let's Work
+
+### Puffer temperature detection
+
+### Temperature and humidity
+##
