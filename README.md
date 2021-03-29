@@ -1,4 +1,4 @@
-# Termo Clima Service
+# Solar Control Unit
 [termoclimaservice.net](https://termoclimaservice.net)
 
 ![logo](https://github.com/mastroalex/TCS/blob/main/logo/grafica%20HQ.png)
