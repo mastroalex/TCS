@@ -51,7 +51,7 @@ Different sensors are used:
 Three different DS18B20s are used to sense the temperature from different temperature wells.
 One in the upper part for the sanitary water outlet, one in the lower part for the solar inlet and the last in the central part where the boiler inlet is located.
 
-<img src="https://2.bp.blogspot.com/_ZNZ7m9tKOBk/TT_J15ARKKI/AAAAAAAAAD8/zJG25-GOOPY/s1600/A%2BThermowell.jpg" alt="tempwell" width="300"/>
+<img src="https://2.bp.blogspot.com/_ZNZ7m9tKOBk/TT_J15ARKKI/AAAAAAAAAD8/zJG25-GOOPY/s1600/A%2BThermowell.jpg" alt="tempwell" width="600"/>
 
 
 Additional DS18B20s can be positioned on the flow and return pipes from the boiler to collect interesting data.
@@ -62,7 +62,7 @@ DHT Sensors are used to sense ambiente temperature and humidty.
 Different data from indoor and outdoor sensor are taken from different board. 
 There is at least one sensor for each floor of the house and one outdoor sensor.
 
-<img src="https://lastminuteengineers.com/wp-content/uploads/arduino/Inside-DHT11-DHT22-AM2302-Temperature-Humidity-Sensor.jpg" alt="dht" width="300"/>
+<img src="https://lastminuteengineers.com/wp-content/uploads/arduino/Inside-DHT11-DHT22-AM2302-Temperature-Humidity-Sensor.jpg" alt="dht" width="600"/>
 
 ## Energy monitor 
 
@@ -77,7 +77,7 @@ Also GAS (methane of LPG) sensor can be added for extra alarm and emergency shut
 
 Relays controlled by a transistor are used to activate particular outputs such as pumps, solenoid valves or clean contacts. Any circuits will be discussed on a case-by-case basis
 
-<img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.letscontrolit.com%2Fwiki%2Findex.php%2FBasics%3A_Relays&psig=AOvVaw07HkKT53bez9-U0XiF1E_e&ust=1617570242052000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCNj9xPD84u8CFQAAAAAdAAAAABAe" alt="relais" width="500"/>
+<img src="https://www.letscontrolit.com/wiki/images/thumb/5/5a/Relay_12V-solution.jpg/800px-Relay_12V-solution.jpg" alt="relais" width="600"/>
 
 
 > For the circuit diagram thanks to [letscontrolit.com](https://www.letscontrolit.com/wiki/index.php/Basics:_Relays)
