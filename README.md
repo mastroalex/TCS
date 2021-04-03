@@ -51,7 +51,7 @@ Different sensors are used:
 Three different DS18B20s are used to sense the temperature from different temperature wells.
 One in the upper part for the sanitary water outlet, one in the lower part for the solar inlet and the last in the central part where the boiler inlet is located.
 
-<img src="https://2.bp.blogspot.com/_ZNZ7m9tKOBk/TT_J15ARKKI/AAAAAAAAAD8/zJG25-GOOPY/s1600/A%2BThermowell.jpg" alt="tempwell" width="600"/>
+<img src="https://2.bp.blogspot.com/_ZNZ7m9tKOBk/TT_J15ARKKI/AAAAAAAAAD8/zJG25-GOOPY/s1600/A%2BThermowell.jpg" alt="tempwell" width="300"/>
 
 
 Additional DS18B20s can be positioned on the flow and return pipes from the boiler to collect interesting data.
@@ -62,7 +62,7 @@ DHT Sensors are used to sense ambiente temperature and humidty.
 Different data from indoor and outdoor sensor are taken from different board. 
 There is at least one sensor for each floor of the house and one outdoor sensor.
 
-<img src="https://lastminuteengineers.com/wp-content/uploads/arduino/Inside-DHT11-DHT22-AM2302-Temperature-Humidity-Sensor.jpg" alt="dht" width="600"/>
+<img src="https://lastminuteengineers.com/wp-content/uploads/arduino/Inside-DHT11-DHT22-AM2302-Temperature-Humidity-Sensor.jpg" alt="dht" width="300"/>
 
 ## Energy monitor 
 
