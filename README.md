@@ -480,7 +480,7 @@ The following section explains how to initialize your server to have good graphs
 
 The goal of this section is to have your own domain name and hosting account that allows you to store sensor readings from the ESP32 or ESP8266. You can visualize the readings from anywhere in the world by accessing your own server domain. 
 
-<img src="https://github.com/mastroalex/tempcontrol/blob/main/diagram/lamp_raspberry.jpg" alt="system" width="1000"/>
+<img src="https://github.com/mastroalex/tempcontrol/blob/main/diagram/web_server.jpg" alt="system" width="1000"/>
 
 
 ### Hosting Your PHP Application and MySQL Database 
