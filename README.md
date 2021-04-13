@@ -58,9 +58,220 @@ Additional DS18B20s can be positioned on the flow and return pipes from the boil
 
 I therefore present a summary of the sketch to read the data from multiple DS18B20 probes inserted in different thermowell.
 
-<img src="https://2.bp.blogspot.com/_ZNZ7m9tKOBk/TT_J15ARKKI/AAAAAAAAAD8/zJG25-GOOPY/s1600/A%2BThermowell.jpg" alt="tempwell" width="500"/>
+<img src="https://github.com/mastroalex/TCS/blob/main/schemi_impianto/ds18b20_bb.png" alt="ds18b20" width="500"/>
 
+The sketch for ESP8266 is the following and can be integrated both with the reading for alexa and with the local webserver, as presented below.
 
+```c
+// Import required libraries
+#include <Arduino.h>
+#include <ESP8266WiFi.h>
+#include <Hash.h>
+#include <ESPAsyncTCP.h>
+#include <ESPAsyncWebServer.h>
+// DS18B20 Double
+#include <OneWire.h>
+#include <DallasTemperature.h>
+// GPIO where the DS18B20 is connected to
+const int oneWireBus = D5;
+// Setup a oneWire instance to communicate with any OneWire devices
+OneWire oneWire(oneWireBus);
+// Pass our oneWire reference to Dallas Temperature sensor
+DallasTemperature sensors(&oneWire);
+// Number of temperature devices found
+int numberOfDevices;
+float tempvec[] = {0, 0};
+// We'll use this variable to store a found device address
+DeviceAddress tempDeviceAddress;
+// Replace with your network credentials
+const char* ssid = "WIFI_SSID";
+const char* password = "WIFI_PASSWORD";
+float t = 0.0;
+float t1 = 0.0;
+float h = 0.0;
+AsyncWebServer server(80);
+unsigned long previousMillis = 0;    // will store last time DHT was updated
+const long interval = 10000; // Updates DHT readings every 10 seconds
+// Codice HTML
+const char index_html[] PROGMEM = R"rawliteral(
+<!DOCTYPE HTML><html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+  <style>
+    html {
+     font-family: Arial;
+     display: inline-block;
+     margin: 0px auto;
+     text-align: center;
+    }
+    h2 { font-size: 3.0rem; }
+    p { font-size: 3.0rem; }
+    .units { font-size: 1.2rem; }
+    .dht-labels{
+      font-size: 1.5rem;
+      vertical-align:middle;
+      padding-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Sala termica</h2>
+  <p>
+    <i class="fas fa-temperature-high" style="color:#b32d00;"></i> 
+    <span class="dht-labels">Boiler 1</span> 
+    <span id="temperature">%TEMP1%</span>
+    <sup class="units">&deg;C</sup>
+  </p>
+  <p>
+    <i class="fas fa-temperature-high" style="color:#0000ff;"></i> 
+    <span class="dht-labels">Boiler 2</span>
+    <span id="humidity">%TEMP2%</span>
+    <sup class="units">&deg;C</sup>
+  </p>
+  <p>
+      </p>
+  
+  <br>
+  
+</body>
+<script>
+setInterval(function ( ) {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("temp1").innerHTML = this.responseText;
+    }
+  };
+  xhttp.open("GET", "/temp1", true);
+  xhttp.send();
+}, 10000 ) ;
+setInterval(function ( ) {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("temp2").innerHTML = this.responseText;
+    }
+  };
+  xhttp.open("GET", "/temp1", true);
+  xhttp.send();
+}, 10000 ) ;
+setInterval(function ( ) {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("humidity").innerHTML = this.responseText;
+    }
+  };
+  xhttp.open("GET", "/humidity", true);
+  xhttp.send();
+}, 10000 ) ;
+</script>
+</html>)rawliteral";
+
+// Replaces placeholder with DHT values
+String processor(const String & var) {
+  //Serial.println(var);
+  if (var == "TEMP1") { // DHT temperature
+    return String(tempvec[0]);
+  }
+  else if (var == "TEMP2") { // DHT temperature
+    return String(tempvec[1]);
+  }
+  else if (var == "HUMIDITY") { // DHT humidity
+    return String(h);
+  }
+  return String();
+}
+void printAddress(DeviceAddress deviceAddress) {
+  for (uint8_t i = 0; i < 8; i++) {
+    if (deviceAddress[i] < 16) Serial.print("0");
+    Serial.print(deviceAddress[i], HEX);
+  }
+}
+void setup() {
+  // Serial port for debugging purposes
+  Serial.begin(115200);
+  // Start the DS18B20 sensor
+  sensors.begin();
+  // Grab a count of devices on the wire
+  numberOfDevices = sensors.getDeviceCount();
+  // locate devices on the bus
+  Serial.print("Locating devices...");
+  Serial.print("Found ");
+  Serial.print(numberOfDevices, DEC);
+  Serial.println(" devices.");
+  // Loop through each device, print out address
+  for (int i = 0; i < numberOfDevices; i++) {
+    // Search the wire for address
+    if (sensors.getAddress(tempDeviceAddress, i)) {
+      Serial.print("Found device ");
+      Serial.print(i, DEC);
+      Serial.print(" with address: ");
+      printAddress(tempDeviceAddress);
+      Serial.println();
+    } else {
+      Serial.print("Found ghost device at ");
+      Serial.print(i, DEC);
+      Serial.print(" but could not detect address. Check power and cabling");
+    }
+  }
+  // Connect to Wi-Fi
+  WiFi.begin(ssid, password);
+  Serial.println("Connecting to WiFi");
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(1000);
+    Serial.println(".");
+  }
+  // Print ESP8266 Local IP Address
+  Serial.println(WiFi.localIP());
+  // Route for root / web page
+  server.on("/", HTTP_GET, [](AsyncWebServerRequest * request) {
+    request->send_P(200, "text/html", index_html, processor);
+  });
+  server.on("/temp1", HTTP_GET, [](AsyncWebServerRequest * request) {
+    request->send_P(200, "text/plain", String(tempvec[0]).c_str());
+  });
+  server.on("/temp2", HTTP_GET, [](AsyncWebServerRequest * request) {
+    request->send_P(200, "text/plain", String(tempvec[1]).c_str());
+  });
+  server.on("/humidity", HTTP_GET, [](AsyncWebServerRequest * request) {
+    request->send_P(200, "text/plain", String(h).c_str());
+  });
+  // Start server
+  server.begin();
+}
+void loop() {
+ sensors.requestTemperatures(); // Send the command to get temperatures
+  // Loop through each device, print out temperature data
+  for (int i = 0; i < numberOfDevices; i++) {
+    // Search the wire for address
+    if (sensors.getAddress(tempDeviceAddress, i)) {
+      // Output the device ID
+      Serial.print("Temperature for device: ");
+      Serial.println(i, DEC);
+      // Print the data
+      float tempC = sensors.getTempC(tempDeviceAddress);
+      Serial.print("Temp C: ");
+      Serial.print(tempC);
+      Serial.print(" Temp F: ");
+      Serial.println(DallasTemperature::toFahrenheit(tempC)); // Converts tempC to Fahrenheit
+      tempvec[i] = tempC;
+    }
+    Serial.print(tempvec[0]);
+    Serial.print("; ");
+    Serial.println(tempvec[1]);
+  }
+}
+```
+
+The web server look like this:
+
+<img src="https://github.com/mastroalex/TCS/blob/main/schemi_impianto/server_boiler.png" alt="ds18b20" width="600"/>
+
+The data can be saved into Mysql server, see below.
+
+It is easy to insert new ds18B20 sensors simply by adding elements to the vector `tempvec[i]`.
 
 
 ## Temperature and humidity
