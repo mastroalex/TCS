@@ -92,7 +92,6 @@ I therefore present a summary of the sketch to read the data from multiple DS18B
 The sketch for ESP8266 is the following and can be integrated both with the reading for alexa and with the local webserver, as presented below.
 
 ```c
-// Import required libraries
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
 #include <Hash.h>
@@ -143,7 +142,6 @@ void setup() {
   Serial.print(numberOfDevices, DEC);
   Serial.println(" devices.");
   for (int i = 0; i < numberOfDevices; i++) {
-    // Search the wire for address
     if (sensors.getAddress(tempDeviceAddress, i)) {
       Serial.print("Found device ");
       Serial.print(i, DEC);
