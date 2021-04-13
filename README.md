@@ -1061,3 +1061,24 @@ And add link in the `<body>`section:
 Look like this and it is fully personalizable.
 
 <img src="https://github.com/mastroalex/tempcontrol/blob/main/privatedomain/finalchart2.png" alt="chart" width="1000">
+
+
+# Future implementations
+
+# Other project
+
+- [Tempcontroll](https://github.com/mastroalex/TCS)
+- [Energy monitor](https://github.com/mastroalex/energy)
+- [Irrigation](https://github.com/mastroalex/irrigation)
+- [Healt monitor](https://github.com/mastroalex/healt)
+
+
+# Contributors 
+
+- @mastroalex
+- Graphic Design - @Alina Elena Mihai
+- Hosting and server setting [@letoinformatics](https://letoinformatics.com/)
+
+---
+
+For supplies of material and technical help [@termoclimaservice](https://termoclimaservice.net/)
