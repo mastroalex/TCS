@@ -206,7 +206,7 @@ It is easy to insert new ds18B20 sensors simply by adding elements to the vector
 DHT Sensors are used to sense ambiente temperature and humidty.
 Different data from indoor and outdoor sensor are taken from different board. 
 
-<img src="https://lastminuteengineers.com/wp-content/uploads/arduino/Inside-DHT11-DHT22-AM2302-Temperature-Humidity-Sensor.jpg" alt="dht" width="300"/>
+<img src="https://github.com/mastroalex/TCS/blob/main/schemi_impianto/IMG_2995.png" alt="dht" width="500"/>
 
 There is at least one sensor for each floor of the house and one outdoor sensor.
 
