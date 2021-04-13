@@ -87,7 +87,7 @@ Additional DS18B20s can be positioned on the flow and return pipes from the boil
 
 I therefore present a summary of the sketch to read the data from multiple DS18B20 probes inserted in different thermowell.
 
-<img src="https://github.com/mastroalex/TCS/blob/main/schemi_impianto/ds18b20_bb.png" alt="ds18b20" width="500"/>
+<img src="https://github.com/mastroalex/TCS/blob/main/schemi_impianto/ds18b20_bb.png" alt="ds18b20" width="800"/>
 
 The sketch for ESP8266 is the following and can be integrated both with the reading for alexa and with the local webserver, as presented below.
 
