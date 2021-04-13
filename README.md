@@ -26,6 +26,26 @@ The system also provides for the creation of chronothermostats and sensors for e
 
 Finally, after a long testing period, the system will also replace the solar control unit.
 
+# Table of contents
+
+- [Solar Heating Control Unit](#solar-heating-control-unit)
+- [Introduction](#introduction)
+- [Shopping bag](#shopping-bag)
+- [Let's Work](#let-s-work)
+  * [Puffer temperature detection](#puffer-temperature-detection)
+  * [Temperature and humidity](#temperature-and-humidity)
+  * [Energy monitor](#energy-monitor)
+  * [Other sensor and actuators](#other-sensor-and-actuators)
+  * [ESP 8622 web server and sensors reading](#esp-8622-web-server-and-sensors-reading)
+      - [DHT](#dht)
+      - [Web server](#web-server)
+      - [Add extra sensor data](#add-extra-sensor-data)
+      - [DS18B20](#ds18b20)
+  * [ESP 32 web server and sensors reading](#esp-32-web-server-and-sensors-reading)
+  * [Alexa integrations](#alexa-integrations)
+    + [Sinric Pro Temperature Sensor](#sinric-pro-temperature-sensor)
+  * [Web server](#web-server-1)
+
 # Shopping bag
 * Arduino UNO
 * NodeMCU ESP32
@@ -278,9 +298,12 @@ It is easy to insert new ds18B20 sensors simply by adding elements to the vector
 
 DHT Sensors are used to sense ambiente temperature and humidty.
 Different data from indoor and outdoor sensor are taken from different board. 
-There is at least one sensor for each floor of the house and one outdoor sensor.
 
 <img src="https://lastminuteengineers.com/wp-content/uploads/arduino/Inside-DHT11-DHT22-AM2302-Temperature-Humidity-Sensor.jpg" alt="dht" width="300"/>
+
+There is at least one sensor for each floor of the house and one outdoor sensor.
+
+<img src="https://github.com/mastroalex/TCS/blob/main/schemi_impianto/server_temp.png" alt="temp_chart" width="1000"/>
 
 ## Energy monitor 
 
