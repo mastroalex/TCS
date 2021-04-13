@@ -1051,12 +1051,7 @@ And add link in the `<body>`section:
         <a class="button" href="http://tempcontrol.it/esp-chart-1d.php">24 Ore</a>
       </div>
     </div>
-    <div id="chart-temperature" class="container"></div>
-    <div id="chart-humidity" class="container"></div>
-    <div id="chart-temperature2" class="container"></div>
-    <div id="chart-humidity2" class="container"></div>
-    <div id="chart-temperature4" class="container"></div>
-    <div id="chart-temperature3" class="container"></div>
+      
 ```
 Look like this and it is fully personalizable.
 
