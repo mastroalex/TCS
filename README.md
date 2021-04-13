@@ -725,3 +725,89 @@ Add this snippet in the `loop()`section:
 The charts looks like this:
 
 <img src="https://github.com/mastroalex/TCS/blob/main/schemi_impianto/boiler_chart.png" alt="system" width="1000"/>
+
+It is interesting to be able to observe the graph for different time intervals.
+To do it copy `esp-chart.php` into new file and change the following lines:
+```php
+$sql = "SELECT id, value1, value2, value3, reading_time FROM Sensor3 order by reading_time desc limit 24";
+```
+In this case the number `24` represents 2 hours of data reading. As it is set up (`t3=300000`) the sensor uploads a reading to the server every 5 minutes. It is possible to set different times intervals.
+Set:
+- `72` for 6 hours and save it as `esp-chart-1d.php`
+- `288` for 24 hours `esp-chart-1d.php`
+
+Now add buttons:
+
+Add some css style into `esp-chart.php`:
+```css
+ .containerbt { 
+    height: 100px;
+    position: relative;
+    }
+
+    .center {
+      margin: 0;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+    }
+    .button {
+      position: relative;
+      background-color: #4CAF50;
+      border: none;
+      font-size: 20px;
+      color: #FFFFFF;
+      padding: 20px;
+      width: 150px;
+      text-align: center;
+      -webkit-transition-duration: 0.4s; /* Safari */
+      transition-duration: 0.4s;
+      text-decoration: none;
+      overflow: hidden;
+      cursor: pointer;
+      border-radius: 10px;
+    }
+
+    .button:after {
+      content: "";
+      background: #90EE90;
+      display: block;
+      position: absolute;
+      padding-top: 300%;
+      padding-left: 350%;
+      margin-left: -20px!important;
+      margin-top: -120%;
+      opacity: 0;
+      transition: all 0.8s
+    }
+
+    .button:active:after {
+      padding: 0;
+      margin: 0;
+      opacity: 1;
+      transition: 0s
+    }
+  .button:hover {background-color: #3e8e41}
+```
+
+And add link in the `<body>`section:
+```html
+<h2>Temp control</h2>
+    <div class="containerbt">
+      <div class="center">
+        <a class="button" href="http://tempcontrol.it/esp-chart-6h.php">6 Ore</a>
+        <a class="button" href="http://tempcontrol.it/esp-chart-1d.php">24 Ore</a>
+      </div>
+    </div>
+    <div id="chart-temperature" class="container"></div>
+    <div id="chart-humidity" class="container"></div>
+    <div id="chart-temperature2" class="container"></div>
+    <div id="chart-humidity2" class="container"></div>
+    <div id="chart-temperature4" class="container"></div>
+    <div id="chart-temperature3" class="container"></div>
+```
+Look like this and it is fully personalizable.
+
+<img src="https://github.com/mastroalex/tempcontrol/blob/main/privatedomain/finalchart2.png" alt="chart" width="1000">
