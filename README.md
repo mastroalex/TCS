@@ -175,19 +175,16 @@ void setup() {
   server.begin();
 }
 void loop() {
- sensors.requestTemperatures(); // Send the command to get temperatures
+ sensors.requestTemperatures(); 
   for (int i = 0; i < numberOfDevices; i++) {
-    // Search the wire for address
     if (sensors.getAddress(tempDeviceAddress, i)) {
-      // Output the device ID
       Serial.print("Temperature for device: ");
       Serial.println(i, DEC);
-      // Print the data
       float tempC = sensors.getTempC(tempDeviceAddress);
       Serial.print("Temp C: ");
       Serial.print(tempC);
       Serial.print(" Temp F: ");
-      Serial.println(DallasTemperature::toFahrenheit(tempC)); // Converts tempC to Fahrenheit
+      Serial.println
       tempvec[i] = tempC;
     }
     Serial.print(tempvec[0]);
