@@ -468,4 +468,260 @@ This code will be integrated with that of the web server.
 
 ---
 
-##
+## Web server 
+
+For remote control it is ideal to have a remote web server that collects the data and allows you to view them comfortably. 
+
+The following section explains how to initialize your server to have good graphs of the data with different time intervals.
+
+*Here is an example* of a code used to send the data of two probes used in the puffer. Refer to the puffer section for how to get the data.
+
+> For more information and a more in-depth guide refer to the section [private domain server](https://github.com/mastroalex/tempcontrol#private-domain-server) into [tempcontrol project](https://github.com/mastroalex/tempcontrol)
+
+The goal of this section is to have your own domain name and hosting account that allows you to store sensor readings from the ESP32 or ESP8266. You can visualize the readings from anywhere in the world by accessing your own server domain. 
+
+<img src="https://github.com/mastroalex/tempcontrol/blob/main/diagram/lamp_raspberry.jpg" alt="system" width="1000"/>
+
+
+### Hosting Your PHP Application and MySQL Database 
+
+In this guide is used Siteground hosting.
+
+After signing up for a hosting account and setting up a domain name, you can login to your cPanel or similar dashboard. After that, follow the next steps to create your database, username, password and SQL table.
+
+Add an user `username` and set a `password`. You must save all those details, because you’ll need them later to establish a database connection with your PHP code.
+
+That’s it! Your new database and user were created successfully. Now, save all your details because you’ll need them later:
+
+- **Database name**: `example_esp_data`
+- **Username**: `example_esp_board`
+- **Password**: `your password`
+
+After creating your database and user, go back to cPanel dashboard and search for “phpMyAdmin”. 
+
+```sql
+CREATE TABLE Sensor (
+    id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    value1 VARCHAR(10),
+    value2 VARCHAR(10),
+    reading_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+)
+```
+
+So create a PHP script that receives incoming requests from the ESP32 or ESP8266 and inserts the data into a MySQL database.
+
+Create a new file in `/public_html` with this exact name and extension: `post-data.php`
+
+PHP Create New file post data .php
+Edit the newly created file (post-data.php) and copy the following snippet:
+```php
+<?php
+$servername = "localhost";
+$dbname = "REPLACE_WITH_YOUR_DATABASE_NAME";
+$username = "REPLACE_WITH_YOUR_USERNAME";
+$password = "REPLACE_WITH_YOUR_PASSWORD";
+$api_key_value = "tPmAT5Ab3j7A8";
+$api_key = $value1 = $value2 = "";
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $api_key = test_input($_POST["api_key"]);
+    if($api_key == $api_key_value) {
+        $value1 = test_input($_POST["value1"]);
+        $value2 = test_input($_POST["value2"]);
+        // Create connection
+        $conn = new mysqli($servername, $username, $password, $dbname);
+        // Check connection
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        } 
+        $sql = "INSERT INTO Sensor (value1, value2)
+        VALUES ('" . $value1 . "', '" . $value2 . "')";
+        if ($conn->query($sql) === TRUE) {
+            echo "New record created successfully";
+        } 
+        else {
+            echo "Error: " . $sql . "<br>" . $conn->error;
+        }
+        $conn->close();
+    }
+    else {
+        echo "Wrong API Key provided.";
+    }
+}
+else {
+    echo "No data posted with HTTP POST.";
+}
+function test_input($data) {
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
+```
+
+Create another PHP file in the `/public_html` directory that will plot the database content in a chart on a web page. Name your new file: `esp-chart.php`
+
+
+```php
+<?php
+$servername = "localhost";
+$dbname = "REPLACE_WITH_YOUR_DATABASE_NAME";
+$username = "REPLACE_WITH_YOUR_USERNAME";
+$password = "REPLACE_WITH_YOUR_PASSWORD";
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+} 
+$sql = "SELECT id, value1, value2, reading_time FROM Sensor order by reading_time desc limit 40";
+$result = $conn->query($sql);
+while ($data = $result->fetch_assoc()){
+    $sensor_data[] = $data;
+}
+$readings_time = array_column($sensor_data, 'reading_time');
+$value1 = json_encode(array_reverse(array_column($sensor_data, 'value1')), JSON_NUMERIC_CHECK);
+$value2 = json_encode(array_reverse(array_column($sensor_data, 'value2')), JSON_NUMERIC_CHECK);
+$reading_time = json_encode(array_reverse($readings_time), JSON_NUMERIC_CHECK);
+$result->free();
+$conn->close();
+?>
+
+<!DOCTYPE html>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <style>
+    body {
+      min-width: 310px;
+    	max-width: 1280px;
+    	height: 500px;
+      margin: 0 auto;
+    }
+    h2 {
+      font-family: Arial;
+      font-size: 2.5rem;
+      text-align: center;
+    }
+  </style>
+  <body>
+    <h2>TEMPCONTROL</h2>
+    <div id="chart-temperature1" class="container"></div>
+    <div id="chart-temperature2" class="container"></div>
+<script>
+
+var value1 = <?php echo $value1; ?>;
+var value2 = <?php echo $value2; ?>;
+var reading_time = <?php echo $reading_time; ?>;
+
+var chartT = new Highcharts.Chart({
+  chart:{ renderTo : 'chart-temperature' },
+  title: { text: 'Temperature Boiler1' },
+  series: [{
+    showInLegend: false,
+    data: value1
+  }],
+  plotOptions: {
+    line: { animation: false,
+      dataLabels: { enabled: true }
+    },
+    series: { color: '#059e8a' }
+  },
+  xAxis: { 
+    type: 'datetime',
+    categories: reading_time
+  },
+  yAxis: {
+    title: { text: 'Temperature (Celsius)' }
+    //title: { text: 'Temperature (Fahrenheit)' }
+  },
+  credits: { enabled: false }
+});
+
+var chartT = new Highcharts.Chart({
+  chart:{ renderTo : 'chart-temperature2' },
+  title: { text: 'Temperature Boiler2' },
+  series: [{
+    showInLegend: false,
+    data: value2
+  }],
+  plotOptions: {
+    line: { animation: false,
+      dataLabels: { enabled: true }
+    },
+    series: { color: '#059e8a' }
+  },
+  xAxis: { 
+    type: 'datetime',
+    categories: reading_time
+  },
+  yAxis: {
+    title: { text: 'Temperature (Celsius)' }
+    //title: { text: 'Temperature (Fahrenheit)' }
+  },
+  credits: { enabled: false }
+});
+</script>
+</body>
+</html>
+```
+
+### Preparing Your ESP32 or ESP8266
+
+The same previous code is used with some additions:
+
+Include new library:
+
+```c
+#include <ESP8266HTTPClient.h>;
+```
+
+Inizialize new variables:
+
+```c
+const char* serverName = "http://yourdomain.it/post-data.php";
+String apiKeyValue = "tPmAT5Ab3j7F8";
+unsigned long t2=0;
+unsigned long dt=0;
+unsigned long t3 = 300000;//update database every 5 minutes
+```
+
+Add this snippet in the `loop()`section:
+
+```c
+//Check WiFi connection status
+  if (WiFi.status() == WL_CONNECTED) {
+    HTTPClient http;
+
+    // Your Domain name with URL path or IP address with path
+    http.begin(serverName);
+
+    // Specify content-type header
+    http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+    dt=millis()-t2;
+    if (dt>= t3) {
+      // Prepare your HTTP POST request data
+      String httpRequestData = "api_key=" + apiKeyValue + "&value1=" + String(temp1)
+                               + "&value2=" + String(temp2)  + "";
+      Serial.print("httpRequestData: ");
+      Serial.println(httpRequestData);
+ 
+      if (httpResponseCode > 0) {
+        Serial.print("HTTP Response code: ");
+        Serial.println(httpResponseCode);
+      }
+      else {
+        Serial.print("Error code: ");
+        Serial.println(httpResponseCode);
+      }
+      t2=millis();
+    }
+    // Free resources
+    http.end();
+  }
+```
+
+> WARNING! It's important to update `temp1`and `temp2`variables from sensor reading. See the puffer section for example for the puffer example.
+
+The charts looks like this:
+
+<img src="https://github.com/mastroalex/TCS/blob/main/schemi_impianto/boiler_chart.png" alt="system" width="1000"/>
