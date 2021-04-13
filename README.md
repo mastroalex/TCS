@@ -22,6 +22,15 @@ In a second phase this control will also be added.
 
 The management of the heating of several rooms with radiators and the management of the air conditioners by means of an RF control will also be added.
 
+The possibility to remotely control the data is also added thanks to a Mysql webserver:
+
+<img src="https://github.com/mastroalex/tempcontrol/blob/main/diagram/web_server.jpg" alt="diagram_sinric" width="1000"/>
+
+This also allows you to have interactive charts:
+
+<img src="https://github.com/mastroalex/TCS/blob/main/schemi_impianto/boiler2_chart.png" alt="temp_chart" width="1000"/>
+
+
 The system also provides for the creation of chronothermostats and sensors for environmental well-being and comfort. Thermal safety devices and methane (or LPG) detectors will also be added. 
 
 Finally, after a long testing period, the system will also replace the solar control unit.
