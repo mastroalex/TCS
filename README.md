@@ -89,59 +89,41 @@ I therefore present a summary of the sketch to read the data from multiple DS18B
 
 <img src="https://github.com/mastroalex/TCS/blob/main/schemi_impianto/ds18b20_bb1.png" alt="ds18b20" width="1000"/>
 
-The sketch for ESP8266 is the following and can be integrated both with the reading for alexa and with the local webserver, as presented below.
+The snippet for ESP8266 is the following and can be integrated both with the reading for alexa and with the local webserver, as presented below. To include it call `dsaggiornamento()` in the `loop()`section and update temperature data from `tempvec[]` elements.
 
 ```c
-#include <Arduino.h>
-#include <ESP8266WiFi.h>
-#include <Hash.h>
-#include <ESPAsyncTCP.h>
-#include <ESPAsyncWebServer.h>
 #include <OneWire.h>
 #include <DallasTemperature.h>
-const int oneWireBus = D5;
+const int oneWireBus = D5; // GPIO where the DS18B20 is connected to
 OneWire oneWire(oneWireBus);
 DallasTemperature sensors(&oneWire);
 int numberOfDevices;
-float tempvec[] = {0, 0};
+float tempvec[] = {0, 0, 0, 0}; // set zero for all the sensor
 DeviceAddress tempDeviceAddress;
-const char* ssid = "WIFI_SSID";
-const char* password = "WIFI_PASSWORD";
-float t = 0.0;
-float t1 = 0.0;
-float h = 0.0;
-AsyncWebServer server(80);
-unsigned long previousMillis = 0;    
-const long interval = 10000; // Updates DHT readings every 10 seconds
-const char index_html[] PROGMEM = R"rawliteral(
-<!DOCTYPE HTML><html>
-INSERT HERE HTLM CODE FOR WEBSERVER
-</html>rawliteral";
-
-String processor(const String & var) {
-   if (var == "TEMP1") { 
-    return String(tempvec[0]);
-  }
-  else if (var == "TEMP2") { 
-    return String(tempvec[1]);
-  }
-  return String();
-}
-void printAddress(DeviceAddress deviceAddress) {
-  for (uint8_t i = 0; i < 8; i++) {
-    if (deviceAddress[i] < 16) Serial.print("0");
-    Serial.print(deviceAddress[i], HEX);
-  }
-}
-void setup() {
-  Serial.begin(115200);
-  sensors.begin();
-  numberOfDevices = sensors.getDeviceCount();
-  Serial.print("Locating devices...");
-  Serial.print("Found ");
-  Serial.print(numberOfDevices, DEC);
-  Serial.println(" devices.");
+...
+void dsaggiornamento() {
   for (int i = 0; i < numberOfDevices; i++) {
+    // Search the wire for address
+    if (sensors.getAddress(tempDeviceAddress, i)) {
+      // Output the device ID
+      Serial.print("Temperature for device: ");
+      Serial.println(i, DEC);
+      // Print the data
+      float tempC = sensors.getTempC(tempDeviceAddress);
+      Serial.print("Temp C: ");
+      Serial.println(tempC);
+      tempvec[i] = tempC;
+    }
+  }
+}
+...
+
+void ds_set() {
+  sensors.begin();   // Start the DS18B20 sensor
+  numberOfDevices = sensors.getDeviceCount();  
+  // Loop through each device, print out address
+  for (int i = 0; i < numberOfDevices; i++) {
+    // Search the wire for address
     if (sensors.getAddress(tempDeviceAddress, i)) {
       Serial.print("Found device ");
       Serial.print(i, DEC);
@@ -154,42 +136,8 @@ void setup() {
       Serial.print(" but could not detect address. Check power and cabling");
     }
   }
-  WiFi.begin(ssid, password);
-  Serial.println("Connecting to WiFi");
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(1000);
-    Serial.println(".");
-  }
-  Serial.println(WiFi.localIP());
-  server.on("/", HTTP_GET, [](AsyncWebServerRequest * request) {
-    request->send_P(200, "text/html", index_html, processor);
-  });
-  server.on("/temp1", HTTP_GET, [](AsyncWebServerRequest * request) {
-    request->send_P(200, "text/plain", String(tempvec[0]).c_str());
-  });
-  server.on("/temp2", HTTP_GET, [](AsyncWebServerRequest * request) {
-    request->send_P(200, "text/plain", String(tempvec[1]).c_str());
-  });
-  server.begin();
 }
-void loop() {
- sensors.requestTemperatures(); 
-  for (int i = 0; i < numberOfDevices; i++) {
-    if (sensors.getAddress(tempDeviceAddress, i)) {
-      Serial.print("Temperature for device: ");
-      Serial.println(i, DEC);
-      float tempC = sensors.getTempC(tempDeviceAddress);
-      Serial.print("Temp C: ");
-      Serial.print(tempC);
-      Serial.print(" Temp F: ");
-      Serial.println
-      tempvec[i] = tempC;
-    }
-    Serial.print(tempvec[0]);
-    Serial.print("; ");
-    Serial.println(tempvec[1]);
-  }
-}
+
 ```
 
 The web server look like this:
