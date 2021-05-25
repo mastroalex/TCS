@@ -42,6 +42,7 @@ Finally, after a long testing period, the system will also replace the solar con
 - [Shopping bag](#shopping-bag)
 - [Let's Work](#let-s-work)
   * [Puffer temperature detection](#puffer-temperature-detection)
+  * [Gas boiler temperature](#gas-boiler-temperature)
   * [Temperature and humidity](#temperature-and-humidity)
   * [Energy monitor](#energy-monitor)
   * [Other sensor and actuators](#other-sensor-and-actuators)
