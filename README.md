@@ -78,6 +78,9 @@ Different sensors are used:
 ## Puffer temperature detection
 
 Three different DS18B20s are used to sense the temperature from different temperature wells.
+
+<img src="https://github.com/mastroalex/TCS/blob/main/schemi_impianto/boiler_connect.png" alt="boiler_connect" width="1000"/>
+
 One in the upper part for the sanitary water outlet, one in the lower part for the solar inlet and the last in the central part where the boiler inlet is located.
 
 <img src="https://2.bp.blogspot.com/_ZNZ7m9tKOBk/TT_J15ARKKI/AAAAAAAAAD8/zJG25-GOOPY/s1600/A%2BThermowell.jpg" alt="tempwell" width="300"/>
@@ -147,6 +150,23 @@ The web server look like this:
 The data can be saved into Mysql server, see below.
 
 It is easy to insert new ds18B20 sensors simply by adding elements to the vector `tempvec[i]`.
+
+## Gas boiler temperature
+
+Ds18B20 with cable sensors is used to control the flow and return temperatures of the water from the boiler. This sensors allows easy contact with the copper tube, moreover it can be easily inserted between the pipe and the insulation.
+
+The system uses the boiler to produce hot water and by means of a three-way valve decides whether to send it to the radiators or to the puffer. Therefore probes were added to monitor the outlet towards the radiators and the puffer and their returns. Another probe monitors the outlet directly from the boiler, before the valve. 
+
+<img src="https://github.com/mastroalex/TCS/blob/main/schemi_impianto/aux_boiler.png" alt="aux_boiler" width="600"/>
+
+Two different boards were developed connected by a 3.5mm jack. The first contains ESP8266 and the general system while the second contains the connection with the temperature probes. DHT22 it is also include to monitor enviromental temperature and humidity. 
+
+<img src="https://github.com/mastroalex/TCS/blob/main/schemi_impianto/boiler_cable.png" alt="boiler" width="1000"/>
+
+The code is similar to the one for monitoring the puffer. 
+
+This is also included with sinric and therefore with Alexa to intrude with home automation
+
 
 
 ## Temperature and humidity
