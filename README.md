@@ -1,13 +1,13 @@
 # Solar Heating Control Unit
 [termoclimaservice.net](https://termoclimaservice.net)
  
-![logo](https://github.com/mastroalex/TCS/blob/main/logo/grafica%20HQ.png)
+![logo](logo/grafica%20HQ.png)
 # Introduction 
 The main purpose of this project is to create an open system for the management of a domestic heating system. 
 
 The system is open and provides an example through which it is possible to adapt it for each heating system. The system includes a puffer, solar panel and a boiler. 
 
-<img src="https://github.com/mastroalex/TCS/blob/main/schemi_impianto/articles-quizzes-solar-collector2-1439195838.png" alt="system" width="500"/>
+<img src="schemi_impianto/articles-quizzes-solar-collector2-1439195838.png" alt="system" width="500"/>
 
 The management is carried out by an Arduino like system that allows you to detect temperatures and force the start-ups of the pumps remotely, via app, webserver or integration with alexa. In addition to temperature differences and heat losses the system also considers environmental conditions and weather previsions.
 In the initial phase, boiler management is not considered but its shutdown is only forced on the basis of weather information. The  boiler managment is left to the solar control unit. This first phase involves a study of temperatures and heat losses and a data logging.
@@ -28,7 +28,7 @@ The possibility to remotely control the data is also added thanks to a Mysql web
 
 This also allows you to have interactive charts:
 
-<img src="https://github.com/mastroalex/TCS/blob/main/schemi_impianto/boiler2_chart.png" alt="temp_chart" width="1000"/>
+<img src="schemi_impianto/boiler2_chart.png" alt="temp_chart" width="1000"/>
 
 
 The system also provides for the creation of chronothermostats and sensors for environmental well-being and comfort. Thermal safety devices and methane (or LPG) detectors will also be added. 
@@ -80,7 +80,7 @@ Different sensors are used:
 
 Three different DS18B20s are used to sense the temperature from different temperature wells.
 
-<img src="https://github.com/mastroalex/TCS/blob/main/schemi_impianto/boiler_connect.png" alt="boiler_connect" width="1000"/>
+<img src="schemi_impianto/boiler_connect.png" alt="boiler_connect" width="1000"/>
 
 One in the upper part for the sanitary water outlet, one in the lower part for the solar inlet and the last in the central part where the boiler inlet is located.
 
@@ -91,7 +91,7 @@ Additional DS18B20s can be positioned on the flow and return pipes from the boil
 
 I therefore present a summary of the sketch to read the data from multiple DS18B20 probes inserted in different thermowell.
 
-<img src="https://github.com/mastroalex/TCS/blob/main/schemi_impianto/ds18b20_bb1.png" alt="ds18b20" width="1000"/>
+<img src="schemi_impianto/ds18b20_bb1.png" alt="ds18b20" width="1000"/>
 
 The snippet for ESP8266 is the following and can be integrated both with the reading for alexa and with the local webserver, as presented below. To include it call `dsaggiornamento()` in the `loop()`section and update temperature data from `tempvec[]` elements.
 
@@ -146,11 +146,39 @@ void ds_set() {
 
 The web server look like this:
 
-<img src="https://github.com/mastroalex/TCS/blob/main/schemi_impianto/server_boiler.png" alt="ds18b20" width="600"/>
+<img src="schemi_impianto/server_boiler.png" alt="ds18b20" width="600"/>
 
 The data can be saved into Mysql server, see below.
 
 It is easy to insert new ds18B20 sensors simply by adding elements to the vector `tempvec[i]`.
+
+It is also included an lcd display. 
+```c
+//setup
+...
+if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+    Serial.println(F("SSD1306 allocation failed"));
+    for (;;);
+  }
+  delay(2000);
+  display.clearDisplay();
+  display.setTextColor(WHITE);
+...
+
+// to display call mostra()
+void mostra() {
+
+display.clearDisplay(); display.setTextSize(1);  display.setCursor(0, 0);  display.print("T ambiente: "); display.setTextSize(1);   display.print(tempvec[2]);  display.print(" ");  display.setTextSize(1);  display.cp437(true);  display.write(167);  display.setTextSize(1);  display.print("C");  display.display(); 
+
+display.setTextSize(1);  display.setCursor(0, 20);  display.print("Caldaia: ");  display.setTextSize(1);   display.print(tempvec[1]);  display.print(" ");  display.setTextSize(1);  display.cp437(true);  display.write(167);  display.setTextSize(1);  display.print("C"); display.display(); 
+
+ display.setTextSize(1);  display.setCursor(0, 30);  display.print("Boiler: ");  display.setTextSize(1); display.print(tempvec[0]);  display.print(" ");  display.setTextSize(1);  display.cp437(true);  display.write(167);  display.setTextSize(1);  display.print("C");  display.display(); 
+  
+display.setTextSize(1);  display.setCursor(0, 40);  display.print("Solare: ");  display.setTextSize(1);  display.print(tempvec[3]);  display.print(" ");  display.setTextSize(1);  display.cp437(true);  display.write(167);  display.setTextSize(1);  display.print("C");    display.display(); 
+
+display.setTextSize(1);  display.setCursor(0, 50);  display.print("Humidity: ");  display.setTextSize(1);    display.print(h);  display.print(" %");  display.display(); 
+}
+```
 
 ## Gas boiler temperature
 
@@ -158,28 +186,127 @@ Ds18B20 with cable sensors is used to control the flow and return temperatures o
 
 The system uses the boiler to produce hot water and by means of a three-way valve decides whether to send it to the radiators or to the puffer. Therefore probes were added to monitor the outlet towards the radiators and the puffer and their returns. Another probe monitors the outlet directly from the boiler, before the valve. 
 
-<img src="https://github.com/mastroalex/TCS/blob/main/schemi_impianto/aux_boiler.png" alt="aux_boiler" width="600"/>
+<img src="schemi_impianto/aux_boiler.png" alt="aux_boiler" width="600"/>
 
 Two different boards were developed connected by a 3.5mm jack. The first contains ESP8266 and the general system while the second contains the connection with the temperature probes. DHT22 it is also include to monitor enviromental temperature and humidity. 
 
-<img src="https://github.com/mastroalex/TCS/blob/main/schemi_impianto/boiler_cable.png" alt="boiler" width="1000"/>
+<img src="schemi_impianto/boiler_cable.png" alt="boiler" width="1000"/>
 
 The code is similar to the one for monitoring the puffer. 
 
-This is also included with sinric and therefore with Alexa to intrude with home automation
+This is also included with sinric and therefore with Alexa to intrude with home automation.
 
+> Real application - Prototype no. 2 - Equipped with five probe for boiler and DHT2 (Sinric + Home Automation) for outdoor temperature and humidity. In this example the five probes measure hot water outlet towards the radiators and the puffer and the inlet from the radiators and the puffer.
 
+<img src="schemi_impianto/proto2.png" alt="prototype" width="1000"/>
+
+```c
+// Import required libraries
+#include <Arduino.h>
+#include <ESP8266WiFi.h>
+#include <ESP8266HTTPClient.h>
+#include <Hash.h>
+#include <ESPAsyncTCP.h>
+#include <ESPAsyncWebServer.h>
+unsigned long timerino = 0;
+unsigned long timerino2 = 5000;
+#include "sinriclib.h"
+#include "dallasens.h"
+#include "dhtsense.h"
+#include "sensdata.h"
+#include "webpage.h"
+//timer x database
+unsigned long t2 = 0;
+unsigned long dt = 0;
+unsigned long t3 = 300000;//update database every 5 minutes
+void setup() {
+  Serial.begin(115200);
+  dht.begin();
+  ds_set();
+  WiFi.begin(ssid, password);   // Connect to Wi-Fi
+  Serial.println("Connecting to WiFi");
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(1000);
+    Serial.println(".");
+  }
+  Serial.println(WiFi.localIP());   // Print ESP8266 Local IP Address
+  // Route for root / web page
+  server.on("/", HTTP_GET, [](AsyncWebServerRequest * request) { request->send_P(200, "text/html", index_html, processor);  });
+  server.on("/temp1", HTTP_GET, [](AsyncWebServerRequest * request) {request->send_P(200, "text/plain", String(tempvec[1]).c_str());  });
+  server.on("/temp2", HTTP_GET, [](AsyncWebServerRequest * request) {request->send_P(200, "text/plain", String(tempvec[0]).c_str());  });
+  server.on("/temp3", HTTP_GET, [](AsyncWebServerRequest * request) { request->send_P(200, "text/plain", String(tempvec[3]).c_str());  });
+  server.on("/temp4", HTTP_GET, [](AsyncWebServerRequest * request) { request->send_P(200, "text/plain", String(tempvec[2]).c_str());  });
+  server.on("/humidity", HTTP_GET, [](AsyncWebServerRequest * request) { request->send_P(200, "text/plain", String(h).c_str());  });
+  server.begin();   // Start server
+  setupSinricPro();
+  delay(2000);
+}
+
+void loop() {
+  SinricPro.handle();
+  handleTemperaturesensor();
+  if (millis() - timerino > timerino2) {
+    sensors.requestTemperatures(); // Send the command to get temperatures
+    dsaggiornamento();
+    timerino = millis();
+  }
+  dht_reading();
+  //Check WiFi connection status
+  if (WiFi.status() == WL_CONNECTED) {
+    HTTPClient http;
+    http.begin(serverName);     // Your Domain name with URL path or IP address with path
+    // Specify content-type header
+    http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+    dt = millis() - t2;
+    if (dt >= t3) {
+      // Prepare your HTTP POST request data
+      String httpRequestData = "api_key=" + apiKeyValue + "&value18=" + String(tempvec[0])
+                               + "&value19=" + String(tempvec[1]) + "&value20=" + String(tempvec[2]) + "&value21=" + String(tempvec[3]) 
+                               + "&value22=" + String(tempvec[4]) + "&value23=" + String(t) + "&value24=" + String(h) + "";
+      Serial.print("httpRequestData: ");
+      Serial.println(httpRequestData);
+      int httpResponseCode = http.POST(httpRequestData);
+      if (httpResponseCode > 0) {
+        Serial.print("HTTP Response code: ");
+        Serial.println(httpResponseCode);
+      }
+      else {
+        Serial.print("Error code: ");
+        Serial.println(httpResponseCode);
+      }
+      t2 = millis();
+    }
+    // Free resources
+    http.end();
+  }
+}
+```
+
+For more information on the code : [tempcontrol.it](https://github.com/mastroalex/tempcontrol)
 
 ## Temperature and humidity
 
 DHT Sensors are used to sense ambiente temperature and humidty.
 Different data from indoor and outdoor sensor are taken from different board. 
 
-<img src="https://github.com/mastroalex/TCS/blob/main/schemi_impianto/IMG_2995.png" alt="dht" width="500"/>
+<img src="schemi_impianto/IMG_2995.png" alt="dht" width="500"/>
+
+> Real application - Prototype no. 1 - First test board  actually used inside electrical junction boxes, exposing the sensor to the environment.
+
+The DHT11 was then replaced by a DHT22, much more precise. 
+
+| | DHT11 | DHT22 |
+| --- | --- | --- | 
+| Humidity range| 20-90% RH | 0-100% RH |
+| Humidity accuracy| ±5% RH	 | ±2% RH | 
+| Temperature range| 0-50 °C | -40-80 °C | 
+| Temperature accuracy| ±2% °C	 | ±0.5% °C | 
+| Reading time| 6-10 sec	 | 2 sec | 
+
 
 There is at least one sensor for each floor of the house and one outdoor sensor.
 
-<img src="https://github.com/mastroalex/TCS/blob/main/schemi_impianto/server_temp.png" alt="temp_chart" width="1000"/>
+<img src="schemi_impianto/server_temp.png" alt="temp_chart" width="1000"/>
 
 ## Energy monitor 
 
@@ -841,7 +968,7 @@ Add this snippet in the `loop()`section:
 
 The charts looks like this:
 
-<img src="https://github.com/mastroalex/TCS/blob/main/schemi_impianto/boiler_chart.png" alt="system" width="1000"/>
+<img src="schemi_impianto/boiler_chart.png" alt="system" width="1000"/>
 
 It is interesting to be able to observe the graph for different time intervals.
 To do it copy `esp-chart.php` into new file and change the following lines:
