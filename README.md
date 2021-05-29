@@ -170,6 +170,14 @@ display.setTextSize(1);  display.setCursor(0, 50);  display.print("Humidity: ");
 }
 ```
 
+___
+
+<img src="schemi_impianto/proto3.png" alt="prototype" width="1000"/>
+
+
+> Real application - Prototype no. 3 - Equipped with three probe for puffer, DHT11 (Sinric + Home Automation) for room temperature and humidity and lcd. 
+
+
 ## Gas boiler temperature
 
 Ds18B20 with cable sensors is used to control the flow and return temperatures of the water from the boiler. This sensors allows easy contact with the copper tube, moreover it can be easily inserted between the pipe and the insulation.
