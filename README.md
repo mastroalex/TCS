@@ -272,7 +272,14 @@ void loop() {
 }
 ```
 
+
 For more information on the code : [tempcontrol.it](https://github.com/mastroalex/tempcontrol)
+
+___
+
+This also include web page and home automation integration: 
+
+
 
 ## Temperature and humidity
 
@@ -297,6 +304,9 @@ The DHT11 was then replaced by a DHT22, much more precise.
 There is at least one sensor for each floor of the house and one outdoor sensor.
 
 <img src="schemi_impianto/server_temp.png" alt="temp_chart" width="1000"/>
+
+
+
 
 ## Energy monitor 
 
