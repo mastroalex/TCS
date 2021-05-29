@@ -1056,7 +1056,7 @@ Look like this and it is fully personalizable.
 
 # Other project
 
-- [Tempcontrol](https://github.com/mastroalex/TCS)
+- [Tempcontrol](https://github.com/mastroalex/tempcontrol)
 - [Energy monitor](https://github.com/mastroalex/energy)
 - [Irrigation](https://github.com/mastroalex/irrigation)
 - [Healt monitor](https://github.com/mastroalex/healt)
