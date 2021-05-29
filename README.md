@@ -176,7 +176,7 @@ Ds18B20 with cable sensors is used to control the flow and return temperatures o
 
 The system uses the boiler to produce hot water and by means of a three-way valve decides whether to send it to the radiators or to the puffer. Therefore probes were added to monitor the outlet towards the radiators and the puffer and their returns. Another probe monitors the outlet directly from the boiler, before the valve. 
 
-<img src="schemi_impianto/aux_boiler.png" alt="aux_boiler" width="600"/>
+<img src="schemi_impianto/aux_boiler.png" alt="aux_boiler" width="1000"/>
 
 Two different boards were developed connected by a 3.5mm jack. The first contains ESP8266 and the general system while the second contains the connection with the temperature probes. DHT22 it is also include to monitor enviromental temperature and humidity. 
 
