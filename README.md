@@ -39,7 +39,6 @@ Finally, after a long testing period, the system will also replace the solar con
 
 - [Solar Heating Control Unit](#solar-heating-control-unit)
 - [Introduction](#introduction)
-- [Shopping bag](#shopping-bag)
 - [Let's Work](#let-s-work)
   * [Puffer temperature detection](#puffer-temperature-detection)
   * [Gas boiler temperature](#gas-boiler-temperature)
@@ -56,16 +55,7 @@ Finally, after a long testing period, the system will also replace the solar con
     + [Sinric Pro Temperature Sensor](#sinric-pro-temperature-sensor)
   * [Web server](#web-server-1)
 
-# Shopping bag
-* Arduino UNO
-* NodeMCU ESP32
-* NodeMCU ESP8266
-* Raspberry Pi
-* Relais
-* DS18B20 Thermal sensor 
-* DHT11 / DHT12 / DHT22 Sensor
-* PT1000
-* CT Sensor YHDC 30A 
+
 
 # Let's Work
 
