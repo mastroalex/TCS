@@ -1054,6 +1054,17 @@ Look like this and it is fully personalizable.
 
 # Future implementations
 
+
+First of all it is obvious the possibility of optimizing everything by transferring it to a PCB circuit, eliminating all that is useless and using only the devices necessary for operation. This certainly implies an increase in production costs but would allow to reduce the dimensions by a lot. 
+
+It is clear that a larger scale production must first be evaluated and certainly not for the test phase.
+
+___ 
+
+The next improvement will be the creation of an ad hoc network so that the devices communicate with each other with a proprietary protocol and then one (or more) hubs actually connect to the Wi-Fi, wired or GSM network.
+
+
+
 # Other project
 
 - [Tempcontrol](https://github.com/mastroalex/tempcontrol)
