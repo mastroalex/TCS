@@ -77,7 +77,7 @@ One in the upper part for the sanitary water outlet, one in the lower part for t
 <img src="https://2.bp.blogspot.com/_ZNZ7m9tKOBk/TT_J15ARKKI/AAAAAAAAAD8/zJG25-GOOPY/s1600/A%2BThermowell.jpg" alt="tempwell" width="300"/>
 
 
-Additional DS18B20s can be positioned on the flow and return pipes from the boiler to collect interesting data.
+Additional DS18B20 can be positioned on the flow and return pipes from the boiler to collect interesting data.
 
 I therefore present a summary of the sketch to read the data from multiple DS18B20 probes inserted in different thermowell.
 
