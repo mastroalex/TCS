@@ -196,7 +196,17 @@ This is also included with sinric and therefore with Alexa to intrude with home 
 
 > Real application - Prototype no. 2 - Equipped with five probe for boiler and DHT2 (Sinric + Home Automation) for outdoor temperature and humidity. In this example the five probes measure hot water outlet towards the radiators and the puffer and the inlet from the radiators and the puffer.
 
+
 <img src="schemi_impianto/proto2.png" alt="prototype" width="1000"/>
+
+
+___
+
+
+> Home automation - Prototype no. 2 - Test for integration of the temperature and humidity detection system and video surveillance. 
+
+<img src="schemi_impianto/boiler_2.png" alt="prototype" width="1000"/>
+
 
 ```c
 // Import required libraries
@@ -286,6 +296,9 @@ For more information on the code : [tempcontrol.it](https://github.com/mastroale
 ___
 
 This also include web page and home automation integration: 
+
+<img src="schemi_impianto/boiler_1.png" alt="webserver" width="500"/>
+
 
 
 
