@@ -44,6 +44,7 @@ Finally, after a long testing period, the system will also replace the solar con
   * [Gas boiler temperature](#gas-boiler-temperature)
   * [Temperature and humidity](#temperature-and-humidity)
   * [Energy monitor](#energy-monitor)
+  * [Flow sensor](#flow-sensor)
   * [Other sensor and actuators](#other-sensor-and-actuators)
   * [ESP 8622 web server and sensors reading](#esp-8622-web-server-and-sensors-reading)
       - [DHT](#dht)
@@ -335,6 +336,13 @@ Other interesting information is drawn from the CT sensor to analyze the energy 
 
 
 ---
+
+# Flow sensor
+
+This type of flow sensor is designed to measure the volume of liquid traveling past a given point, a great way to keep tabs on how much water your drip irrigation system is using, or any other project were the flow of liquid needs to be tracked. We like this basic flow sensors because of its relatively low cost and ease of use.
+
+<img src="schemi_impianto/flow_sensor.jpg" alt="flow sensor" width="400"/>
+
 
 ## Other sensor and actuators
 
