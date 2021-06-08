@@ -343,6 +343,44 @@ This type of flow sensor is designed to measure the volume of liquid traveling p
 
 <img src="schemi_impianto/flow_sensor.jpg" alt="flow sensor" width="400"/>
 
+Next we are going to use a 10K Ohm resistor (Brown, Black, Orange) as a pull up resistor. The pull up resistor prevents a situation where the Arduino digital input pin ends up floating (think of this as the input not definitively being on or off). When an input is floating it may hold the last value, it may flip between off and on, quite random – generally not a good thing when we are trying to tell if it is on or off!
+
+We know that this sensor will output a pulse to Arduino pin 2 every time the flapper rotates and every and that **every rotation means 2.25mL** of fluid has passed the sensor so calculating the flow rate is really just a matter of counting the revolutions per minute and multiplying by 2.25mL .
+So, what is the best way to count RPM with an Arduino? In this case the interrupt pin is going to be very useful. 
+
+```c
+int flowPin = 2;    //This is the input pin on the Arduino
+double flowRate;    //This is the value we intend to calculate. 
+volatile int count; //This integer needs to be set as volatile to ensure it updates correctly during the interrupt process.  
+ 
+void setup() {
+  // put your setup code here, to run once:
+  pinMode(flowPin, INPUT);           //Sets the pin as an input
+  attachInterrupt(0, Flow, RISING);  //Configures interrupt 0 (pin 2 on the Arduino Uno) to run the function "Flow"  
+  Serial.begin(9600);  //Start Serial
+}
+void loop() {
+  // put your main code here, to run repeatedly:  
+  count = 0;      // Reset the counter so we start counting from 0 again
+  interrupts();   //Enables interrupts on the Arduino
+  delay (1000);   //Wait 1 second 
+  noInterrupts(); //Disable the interrupts on the Arduino
+   
+  //Start the math
+  flowRate = (count * 2.25);        //Take counted pulses in the last second and multiply by 2.25mL 
+  flowRate = flowRate * 60;         //Convert seconds to minutes, giving you mL / Minute
+  flowRate = flowRate / 1000;       //Convert mL to Liters, giving you Liters / Minute
+ 
+  Serial.println(flowRate);         //Print the variable flowRate to Serial
+}
+ 
+void Flow()
+{
+   count++; //Every time this function is called, increment "count" by 1
+}
+```
+
+
 
 ## Other sensor and actuators
 
