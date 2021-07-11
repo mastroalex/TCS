@@ -337,7 +337,7 @@ Other interesting information is drawn from the CT sensor to analyze the energy 
 
 ---
 
-# Flow sensor
+## Flow sensor
 
 This type of flow sensor is designed to measure the volume of liquid traveling past a given point, a great way to keep tabs on how much water your drip irrigation system is using, or any other project were the flow of liquid needs to be tracked. We like this basic flow sensors because of its relatively low cost and ease of use.
 
